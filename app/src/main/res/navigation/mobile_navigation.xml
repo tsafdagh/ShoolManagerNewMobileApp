@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.kola.schoolmanagerapp.HomeUi.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_emploiDeTempFragment"
+            app:destination="@id/emploiDeTempFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_eleveFragment"
+            app:destination="@id/eleveFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_enseignantFragment"
+            app:destination="@id/enseignantFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_salleDeClasseFragment"
+            app:destination="@id/salleDeClasseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.kola.schoolmanagerapp.HomeUi.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.kola.schoolmanagerapp.HomeUi.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/emploiDeTempFragment"
+        android:name="com.kola.schoolmanagerapp.emploi_de_temps.EmploiDeTempFragment"
+        android:label="emploi_de_temp_fragment"
+        tools:layout="@layout/emploi_de_temp_fragment" />
+    <fragment
+        android:id="@+id/eleveFragment"
+        android:name="com.kola.schoolmanagerapp.eleves.EleveFragment"
+        android:label="eleve_fragment"
+        tools:layout="@layout/eleve_fragment" >
+        <action
+            android:id="@+id/action_eleveFragment_to_selectPictureFragment"
+            app:destination="@id/selectPictureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enseignantFragment"
+        android:name="com.kola.schoolmanagerapp.enseignants.EnseignantFragment"
+        android:label="enseignant_fragment"
+        tools:layout="@layout/enseignant_fragment" />
+    <fragment
+        android:id="@+id/salleDeClasseFragment"
+        android:name="com.kola.schoolmanagerapp.salles_de_classe.SalleDeClasseFragment"
+        android:label="salle_de_classe_fragment"
+        tools:layout="@layout/salle_de_classe_fragment" />
+    <fragment
+        android:id="@+id/selectPictureFragment"
+        android:name="com.kola.schoolmanagerapp.eleves.uI.SelectPictureFragment"
+        android:label="select_picture_fragment"
+        tools:layout="@layout/select_picture_fragment" >
+        <argument
+            android:name="student"
+            app:argType="com.kola.schoolmanagerapp.gestionEleves.Model$Student" />
+    </fragment>
+</navigation>
