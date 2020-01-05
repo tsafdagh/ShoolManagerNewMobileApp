@@ -30,7 +30,7 @@ class SalleDeClasseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.salle_de_classe_fragment, container, false)
-        rvSallClass = root.findViewById(R.id.id_rv_salle_class_ragmnt)
+        rvSallClass = root.findViewById(R.id.id_rv_salle_class_fragmnt)
         return root
     }
 

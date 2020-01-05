@@ -6,7 +6,7 @@
     tools:context=".salles_de_classe.SalleDeClasseFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/id_rv_salle_class_ragmnt"
+        android:id="@+id/id_rv_salle_class_fragmnt"
         android:layout_width="match_parent"
         android:layout_gravity="center"
         android:layout_height="wrap_content"/>
