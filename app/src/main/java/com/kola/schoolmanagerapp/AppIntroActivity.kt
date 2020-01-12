@@ -6,16 +6,17 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.text.HtmlCompat
 import com.google.zxing.BarcodeFormat
 import kotlinx.android.synthetic.main.activity_app_intro.*
-import org.jetbrains.anko.toast
 
 class AppIntroActivity : AppCompatActivity() {
 
 
     private val MY_CAMERA_REQUEST_CODE = 1
+    private val TAG = "AppIntroActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +50,17 @@ class AppIntroActivity : AppCompatActivity() {
         qrCodeScanner.startCamera()
         qrCodeScanner.setResultHandler { p0 ->
             if (p0 != null) {
-                toast(p0.text)
+                Log.d(TAG, p0.text)
+                getInformationsFromQrCode(p0.text)
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
+    }
+
+    private fun getInformationsFromQrCode(info:String) {
+        val tabInfo = info.split("#")
+        EndPoints.configureOtherRouteUsingIp(tabInfo.first())
+        GlobalConfig.ANEEACADEMIQUE = tabInfo.last()
     }
 
     override fun onPause() {

@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -18,7 +17,6 @@ import org.json.JSONObject
 class EnseignantViewModel(private val app: Application) : AndroidViewModel(app) {
 
     val teacherListObserver = MutableLiveData<List<Teacher>>()
-
     private val TAG = "EnseignantViewModel"
     /*
 * Cette fonction a pour but de lister l'ensemble
@@ -33,8 +31,7 @@ class EnseignantViewModel(private val app: Application) : AndroidViewModel(app) 
                     Log.d(TAG, "response String: $s")
                     val obj = JSONObject(s)
                     if (!obj.getBoolean("error")) {
-                        val array = obj.getJSONArray("classRooms")
-
+                        val array = obj.getJSONArray("teachears")
                         val teacherList = ArrayList<Teacher>()
 
                         for (i in 0..array.length() - 1) {
