@@ -6,4 +6,7 @@
 
     <color name="color_input_login">#4F5F8E</color>
 
+    <color name="color_start_gradient_balance">#FFD15C</color>
+    <color name="color_end_gradient_balance">#F66C1C</color>
+    <color name="white_color">#FFFFFF</color>
 </resources>

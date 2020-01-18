@@ -1,8 +1,7 @@
-package com.kola.schoolmanagerapp.salles_de_classe.items
+package com.kola.schoolmanagerapp.notes_eleves.items
 
 import com.kola.schoolmanagerapp.R
 import com.kola.schoolmanagerapp.entities.ClassRoom
-import com.kola.schoolmanagerapp.gestionEleves.Model
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.row_item_salle_de_classe.view.*

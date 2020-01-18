@@ -60,6 +60,7 @@ class AppIntroActivity : AppCompatActivity() {
     private fun getInformationsFromQrCode(info:String) {
         val tabInfo = info.split("#")
         EndPoints.configureOtherRouteUsingIp(tabInfo.first())
+        Log.d(TAG, "Annee aca"+tabInfo.last())
         GlobalConfig.ANEEACADEMIQUE = tabInfo.last()
     }
 

@@ -4,4 +4,10 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_scan_qr_code">Scan the QR code</string>
+    <string name="notes_eleves">Notes des élèves</string>
+    <string name="s_lectionner_une_salle_de_classe">Sélectionner une salle de classe</string>
+    <string name="liste_des_l_ves">Liste des élèves</string>
+    <string name="entrer_note">Enregistrement de note</string>
+    <string name="enter_student_note">Entrez la note de l\'élève</string>
+    <string name="enregistrer">Enregistrer</string>
 </resources>

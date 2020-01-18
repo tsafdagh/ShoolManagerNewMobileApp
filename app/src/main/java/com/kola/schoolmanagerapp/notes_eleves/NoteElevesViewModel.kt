@@ -1,10 +1,11 @@
-package com.kola.schoolmanagerapp.eleves
+package com.kola.schoolmanagerapp.notes_eleves
 
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -13,95 +14,12 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.kola.schoolmanagerapp.EndPoints
 import com.kola.schoolmanagerapp.GlobalConfig
-import com.kola.schoolmanagerapp.VolleySingleton
 import com.kola.schoolmanagerapp.entities.ClassRoom
 import com.kola.schoolmanagerapp.gestionEleves.Model
 import org.json.JSONException
 import org.json.JSONObject
-import java.sql.Date
 
-class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
-
-    /* private val TAG = "EleveViewModel"
-     private val disposable = CompositeDisposable()
-     private val eleveService = EleveService()*/
-
-    /*fun getAllClassRoom() {
-        disposable.add(
-            eleveService.getAllCLassRoom()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<List<ClassRoom>>() {
-                    override fun onComplete() {
-                        Log.d(TAG, " Chargement de la liste des classes complete ")
-                    }
-
-                    override fun onNext(allClassRoom: List<ClassRoom>) {
-                        Log.d(TAG, " Liste des salles de classe: $allClassRoom")
-                        allClassRoom.forEach {
-                            Log.d(TAG, it.toString())
-                        }
-                        classRoomListObserver.value = allClassRoom
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d(TAG, "Failed to load classromm list: ${e.toString()}")
-                    }
-
-                }
-                ))
-    }
-
-    fun getAllStudentsByClassRoom(classroomCode: String) {
-        disposable.add(
-            eleveService.getAllStudentByClass(classroomCode)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<ArrayList<Model.Student>>() {
-                    override fun onComplete() {
-                        Log.d(TAG, " Chargement de la liste des élève complete ")
-                    }
-
-                    override fun onNext(allStrudentList: ArrayList<Model.Student>) {
-                        Log.d(TAG, " Liste des élèves de classe: $allStrudentList")
-                        allStrudentList.forEach {
-                            Log.d(TAG, it.toString())
-                        }
-                        studentClassRoomListObserver.value = allStrudentList
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d(TAG, "Failed to load students classromm list: ${e}")
-                    }
-                }
-                ))
-    }
-
-    fun getAllStudents() {
-        disposable.add(
-            eleveService.getAllStudents()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<ArrayList<Model.Student>>() {
-                    override fun onComplete() {
-                        Log.d(TAG, " Chargement de la liste des élève complete ")
-                    }
-
-                    override fun onNext(allStrudentList: ArrayList<Model.Student>) {
-                        Log.d(TAG, " Liste des élèves de classe: $allStrudentList")
-                        allStrudentList.forEach {
-                            Log.d(TAG, it.toString())
-                        }
-                        AllStudentListObserver.value = allStrudentList
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d(TAG, "Failed to load students classromm list: ${e.cause}")
-                    }
-
-                }
-                ))
-    }*/
+class NoteElevesViewModel(val app:Application) : AndroidViewModel(app) {
 
     val classRoomListObserver = MutableLiveData<List<ClassRoom>>()
     val studentClassRoomListObserver = MutableLiveData<ArrayList<Model.Student>>()
@@ -184,7 +102,7 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
                         for (i in 0..array.length() - 1) {
                             val objectstudent = array.getJSONObject(i)
 
-                            val urlImage =  "http://"+EndPoints.SERVER_IP.plus("/"+objectstudent.getString("image_location"))
+                            val urlImage =  "http://"+ EndPoints.SERVER_IP.plus("/"+objectstudent.getString("image_location"))
                             Log.d(TAG, "student url image = $urlImage}")
 
                             val student = Model.Student(

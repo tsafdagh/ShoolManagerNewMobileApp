@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/id_eleve_and_salle_d_classe_fragment"
-    tools:context=".eleves.EleveFragment">
+    tools:context=".notes_eleves.NoteElevesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,10 +18,10 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Sélectionner une salle de classe" />
+            android:text="@string/s_lectionner_une_salle_de_classe" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/id_rv_select_student_classrom"
+            android:id="@+id/id_rv_select_student_classrom_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp" />
@@ -32,12 +32,13 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Liste de tous les élèves" />
+            android:text="@string/liste_des_l_ves" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/id_rv_all_students"
+            android:id="@+id/id_rv_all_students_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp" />
     </LinearLayout>
-</FrameLayout>
+    <include layout="@layout/botomsheet_note" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

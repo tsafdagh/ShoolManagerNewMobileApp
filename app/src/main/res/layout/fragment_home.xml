@@ -191,7 +191,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Salles de classe"
+                            android:text="@string/notes_eleves"
                             android:textSize="16dp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

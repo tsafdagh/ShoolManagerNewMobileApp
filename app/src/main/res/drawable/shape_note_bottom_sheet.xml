@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+
+    <solid android:color="#F1E5C1" />
+
+    <!--    <solid android:color="@color/background_transaction_details" />-->
+
+    <corners
+        android:topLeftRadius="28dp"
+        android:topRightRadius="28dp"/>
+    <padding android:top="8dp" />
+</shape>

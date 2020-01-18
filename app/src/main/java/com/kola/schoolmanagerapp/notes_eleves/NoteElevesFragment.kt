@@ -1,4 +1,4 @@
-package com.kola.schoolmanagerapp.eleves
+package com.kola.schoolmanagerapp.notes_eleves
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kola.schoolmanagerapp.R
 import com.kola.schoolmanagerapp.eleves.items.EleveItem
 import com.kola.schoolmanagerapp.entities.ClassRoom
@@ -19,16 +21,17 @@ import com.kola.schoolmanagerapp.notes_eleves.items.SalleDeClasseItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.eleve_fragment.*
+import kotlinx.android.synthetic.main.botomsheet_note.view.*
 import org.jetbrains.anko.toast
 
-class EleveFragment : Fragment() {
+class NoteElevesFragment : Fragment() {
+
 
     companion object {
-        fun newInstance() = EleveFragment()
+        fun newInstance() = NoteElevesFragment()
     }
 
-    private lateinit var viewModel: EleveViewModel
+    private lateinit var viewModel: NoteElevesViewModel
 
 
     private lateinit var rvSallClass: RecyclerView
@@ -37,20 +40,25 @@ class EleveFragment : Fragment() {
     private lateinit var rvEleves: RecyclerView
     private lateinit var elleveSection: Section
 
+    private lateinit var selectBottomSheet: LinearLayout
+    lateinit var selectedBottomSheetBehavior: BottomSheetBehavior<*>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.eleve_fragment, container, false)
-        rvSallClass = root.findViewById(R.id.id_rv_select_student_classrom)
-        rvEleves = root.findViewById(R.id.id_rv_all_students)
+        val root = inflater.inflate(R.layout.note_eleve_fragment, container, false)
+        rvSallClass = root.findViewById(R.id.id_rv_select_student_classrom_note)
+        rvEleves = root.findViewById(R.id.id_rv_all_students_note)
+        selectBottomSheet = root.note_bottomsheet
+        selectedBottomSheetBehavior = BottomSheetBehavior.from(selectBottomSheet)
         return root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(EleveViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(NoteElevesViewModel::class.java)
         configureObservers()
 
         viewModel.loadClassRooms()
@@ -61,7 +69,7 @@ class EleveFragment : Fragment() {
     private fun configureObservers() {
         viewModel.classRoomListObserver.observe(this, Observer { listOfClass ->
             rvSallClass.apply {
-                layoutManager = LinearLayoutManager(this@EleveFragment.context, LinearLayout.HORIZONTAL,false).apply {
+                layoutManager = LinearLayoutManager(this@NoteElevesFragment.context, LinearLayout.HORIZONTAL,false).apply {
                     orientation = LinearLayoutManager.HORIZONTAL
                 }
                 adapter = GroupAdapter<ViewHolder>().apply {
@@ -92,7 +100,7 @@ class EleveFragment : Fragment() {
      */
     private fun showStudentListInView(studentList: ArrayList<Model.Student>) {
         rvEleves.apply {
-            layoutManager = LinearLayoutManager(this@EleveFragment.context, LinearLayout.VERTICAL,false).apply {
+            layoutManager = LinearLayoutManager(this@NoteElevesFragment.context, LinearLayout.VERTICAL,false).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
             adapter = GroupAdapter<ViewHolder>().apply {
@@ -101,11 +109,12 @@ class EleveFragment : Fragment() {
                 setOnItemClickListener { item, view ->
 
                     if (item is EleveItem) {
-                        val action =
-                            EleveFragmentDirections.actionEleveFragmentToSelectPictureFragment(
-                                item.eleve
-                            )
-                        Navigation.findNavController(id_eleve_and_salle_d_classe_fragment).navigate(action)
+                        if (selectedBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                            selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+                        } else {
+                            selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
+                            //context!!.toast("Expand sheet");
+                        }
                     }
                 }
             }

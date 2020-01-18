@@ -56,9 +56,9 @@
         tools:layout="@layout/enseignant_fragment" />
     <fragment
         android:id="@+id/salleDeClasseFragment"
-        android:name="com.kola.schoolmanagerapp.salles_de_classe.SalleDeClasseFragment"
+        android:name="com.kola.schoolmanagerapp.notes_eleves.NoteElevesFragment"
         android:label="salle_de_classe_fragment"
-        tools:layout="@layout/salle_de_classe_fragment" />
+        tools:layout="@layout/note_eleve_fragment" />
     <fragment
         android:id="@+id/selectPictureFragment"
         android:name="com.kola.schoolmanagerapp.eleves.uI.SelectPictureFragment"
