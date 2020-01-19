@@ -53,7 +53,7 @@
 
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/id_community_contribution_amount"
+        android:id="@+id/id_edt_gestion_note_note_eleve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -70,7 +70,7 @@
 
 
     <Button
-        android:id="@+id/id_community_contribution_btn_contribute"
+        android:id="@+id/id_btn_gestion_note_enregistrer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

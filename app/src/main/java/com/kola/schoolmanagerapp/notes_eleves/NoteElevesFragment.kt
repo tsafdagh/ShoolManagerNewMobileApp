@@ -8,8 +8,6 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -21,6 +19,7 @@ import com.kola.schoolmanagerapp.notes_eleves.items.SalleDeClasseItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.botomsheet_note.*
 import kotlinx.android.synthetic.main.botomsheet_note.view.*
 import org.jetbrains.anko.toast
 
@@ -43,6 +42,8 @@ class NoteElevesFragment : Fragment() {
     private lateinit var selectBottomSheet: LinearLayout
     lateinit var selectedBottomSheetBehavior: BottomSheetBehavior<*>
 
+    lateinit var eleveSelectionner:Model.Student
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,12 +65,52 @@ class NoteElevesFragment : Fragment() {
         viewModel.loadClassRooms()
         viewModel.loadStudents(false, "")
 
+        configureOnclick()
+
     }
+
+    private fun configureOnclick() {
+        id_edt_gestion_note_note_eleve.setOnClickListener {
+
+        }
+
+        id_btn_gestion_note_enregistrer.setOnClickListener {
+            if (controleNote()) {
+                val noteEleve = id_edt_gestion_note_note_eleve.text.toString().toDouble()
+            }
+        }
+
+    }
+
+    private fun controleNote(): Boolean {
+
+        try {
+            val noteString = id_edt_gestion_note_note_eleve.text.toString()
+
+            val noteDouble = noteString.toDouble()
+            if (noteDouble >= 0 && noteDouble <= 20) {
+                return true
+            } else {
+                id_edt_gestion_note_note_eleve.error = "Entrez une note comprise entre 0 et 20"
+                return false
+            }
+
+        } catch (exception: Exception) {
+            id_edt_gestion_note_note_eleve.error = "Entrez une note Valide SVP"
+            return false
+        }
+
+    }
+
 
     private fun configureObservers() {
         viewModel.classRoomListObserver.observe(this, Observer { listOfClass ->
             rvSallClass.apply {
-                layoutManager = LinearLayoutManager(this@NoteElevesFragment.context, LinearLayout.HORIZONTAL,false).apply {
+                layoutManager = LinearLayoutManager(
+                    this@NoteElevesFragment.context,
+                    LinearLayout.HORIZONTAL,
+                    false
+                ).apply {
                     orientation = LinearLayoutManager.HORIZONTAL
                 }
                 adapter = GroupAdapter<ViewHolder>().apply {
@@ -100,7 +141,11 @@ class NoteElevesFragment : Fragment() {
      */
     private fun showStudentListInView(studentList: ArrayList<Model.Student>) {
         rvEleves.apply {
-            layoutManager = LinearLayoutManager(this@NoteElevesFragment.context, LinearLayout.VERTICAL,false).apply {
+            layoutManager = LinearLayoutManager(
+                this@NoteElevesFragment.context,
+                LinearLayout.VERTICAL,
+                false
+            ).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
             adapter = GroupAdapter<ViewHolder>().apply {
@@ -111,6 +156,7 @@ class NoteElevesFragment : Fragment() {
                     if (item is EleveItem) {
                         if (selectedBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                             selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+                            eleveSelectionner = item.eleve
                         } else {
                             selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
                             //context!!.toast("Expand sheet");

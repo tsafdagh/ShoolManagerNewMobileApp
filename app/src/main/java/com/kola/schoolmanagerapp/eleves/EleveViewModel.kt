@@ -222,6 +222,7 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
                 params.put("codeClasse", classroomId ?: "")
+                params.put("anneAcademique", GlobalConfig.ANEEACADEMIQUE ?:"")
                 return params
             }
         }
