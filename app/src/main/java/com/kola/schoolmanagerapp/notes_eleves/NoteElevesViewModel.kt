@@ -151,4 +151,48 @@ class NoteElevesViewModel(val app:Application) : AndroidViewModel(app) {
         val requestQueue = Volley.newRequestQueue(app)
         requestQueue.add<String>(stringRequest2)
     }
+
+    val saveNoteObserver = MutableLiveData<Boolean>()
+    fun saveStudentNote(matricule:String, codeMatiere:String, numSequence:String, note:Double, examCycle:String ="cc") {
+        val stringRequest = object : StringRequest(
+            Request.Method.POST,EndPoints.URL_SAVE_student_NOTES,
+            Response.Listener<String> { response ->
+
+                Log.d(TAG, "all String: $response")
+                try {
+                    val obj = JSONObject(response)
+                    val mesage =  obj.getString("message")
+                    Log.d(TAG, "response String: $mesage")
+                    //TODO controller si la reposse est positive
+                    saveNoteObserver.value = true
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    Log.d(TAG, "response error: ${e.message}")
+                    saveNoteObserver.value = false
+                }
+            },
+            object : Response.ErrorListener {
+                override fun onErrorResponse(volleyError: VolleyError) {
+                    Toast.makeText(app, volleyError.message, Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "response error: ${volleyError.message}")
+                    saveNoteObserver.value = false
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params.put("matricule", matricule)
+                params.put("code_matiere", codeMatiere)
+                params.put("num_sequence", numSequence)
+                params.put("notes", "$note")
+                params.put("examCycle", examCycle)
+                params.put("annee_aca", GlobalConfig.ANEEACADEMIQUE)
+                return params
+            }
+        }
+
+        //adding request to queue
+        val requestQueue = Volley.newRequestQueue(app)
+        requestQueue.add<String>(stringRequest)
+    }
 }
