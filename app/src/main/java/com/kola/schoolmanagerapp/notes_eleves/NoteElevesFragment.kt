@@ -28,6 +28,9 @@ class NoteElevesFragment : Fragment() {
 
     companion object {
         fun newInstance() = NoteElevesFragment()
+        lateinit var eleveSelectionner: Model.Student
+        lateinit var codeMatiereSelectionner: String
+        lateinit var numSequenceSelectionner: String
     }
 
     private lateinit var viewModel: NoteElevesViewModel
@@ -41,8 +44,6 @@ class NoteElevesFragment : Fragment() {
 
     private lateinit var selectBottomSheet: LinearLayout
     lateinit var selectedBottomSheetBehavior: BottomSheetBehavior<*>
-
-    lateinit var eleveSelectionner:Model.Student
 
 
     override fun onCreateView(
@@ -77,6 +78,15 @@ class NoteElevesFragment : Fragment() {
         id_btn_gestion_note_enregistrer.setOnClickListener {
             if (controleNote()) {
                 val noteEleve = id_edt_gestion_note_note_eleve.text.toString().toDouble()
+
+                codeMatiereSelectionner ="ANG-2ndC"
+                numSequenceSelectionner ="1"
+                viewModel.saveStudentNote(
+                    eleveSelectionner.matricule,
+                    codeMatiereSelectionner,
+                    numSequenceSelectionner,
+                    noteEleve
+                )
             }
         }
 
@@ -88,7 +98,7 @@ class NoteElevesFragment : Fragment() {
             val noteString = id_edt_gestion_note_note_eleve.text.toString()
 
             val noteDouble = noteString.toDouble()
-            if (noteDouble >= 0 && noteDouble <= 20) {
+            if (noteDouble in 0.0..20.0) {
                 return true
             } else {
                 id_edt_gestion_note_note_eleve.error = "Entrez une note comprise entre 0 et 20"
@@ -131,6 +141,16 @@ class NoteElevesFragment : Fragment() {
         })
         viewModel.AllStudentListObserver.observe(this, Observer { studentList ->
             showStudentListInView(studentList)
+        })
+
+        viewModel.saveNoteObserver.observe(this, Observer {
+            it?.let { noteSaved ->
+                if (noteSaved) {
+                    context!!.toast("Note enregistrer avec succes")
+                } else {
+                    context!!.toast("Erreur d'enregistrement de la note")
+                }
+            }
         })
     }
 

@@ -153,7 +153,7 @@ class NoteElevesViewModel(val app:Application) : AndroidViewModel(app) {
     }
 
     val saveNoteObserver = MutableLiveData<Boolean>()
-    fun saveStudentNote(matricule:String, codeMatiere:String, numSequence:String, note:Double, examCycle:String ="cc") {
+    fun saveStudentNote(matricule:String, codeMatiere:String, numSequence:String, note:Double, examCycle:String ="note") {
         val stringRequest = object : StringRequest(
             Request.Method.POST,EndPoints.URL_SAVE_student_NOTES,
             Response.Listener<String> { response ->
@@ -161,22 +161,22 @@ class NoteElevesViewModel(val app:Application) : AndroidViewModel(app) {
                 Log.d(TAG, "all String: $response")
                 try {
                     val obj = JSONObject(response)
+
+                    val isOk = obj.getBoolean("error")
+                    saveNoteObserver.value = isOk
+
                     val mesage =  obj.getString("message")
                     Log.d(TAG, "response String: $mesage")
-                    //TODO controller si la reposse est positive
-                    saveNoteObserver.value = true
                 } catch (e: JSONException) {
                     e.printStackTrace()
                     Log.d(TAG, "response error: ${e.message}")
                     saveNoteObserver.value = false
                 }
             },
-            object : Response.ErrorListener {
-                override fun onErrorResponse(volleyError: VolleyError) {
-                    Toast.makeText(app, volleyError.message, Toast.LENGTH_LONG).show()
-                    Log.d(TAG, "response error: ${volleyError.message}")
-                    saveNoteObserver.value = false
-                }
+            Response.ErrorListener { volleyError ->
+                Toast.makeText(app, volleyError.message, Toast.LENGTH_LONG).show()
+                Log.d(TAG, "response error: ${volleyError.message}")
+                saveNoteObserver.value = false
             }) {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {

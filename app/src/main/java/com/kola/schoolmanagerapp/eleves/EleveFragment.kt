@@ -1,6 +1,7 @@
 package com.kola.schoolmanagerapp.eleves
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kola.schoolmanagerapp.EndPoints
+import com.kola.schoolmanagerapp.GlobalConfig
 import com.kola.schoolmanagerapp.R
 import com.kola.schoolmanagerapp.eleves.items.EleveItem
 import com.kola.schoolmanagerapp.entities.ClassRoom
@@ -26,6 +29,7 @@ class EleveFragment : Fragment() {
 
     companion object {
         fun newInstance() = EleveFragment()
+        private val TAG = "EleveFragment"
     }
 
     private lateinit var viewModel: EleveViewModel
@@ -72,6 +76,11 @@ class EleveFragment : Fragment() {
                         if (item is SalleDeClasseItem) {
                             context!!.toast("OnClick item")
                             //loadStudentsForClass(item.classRoom.code)
+
+                            Log.d(TAG, "information:" +
+                                    "année academique: ${GlobalConfig.ANEEACADEMIQUE} \n" +
+                                    "code classe: ${item.classRoom.code}")
+
                             viewModel.loadStudents(true, item.classRoom.code)
 
                         }

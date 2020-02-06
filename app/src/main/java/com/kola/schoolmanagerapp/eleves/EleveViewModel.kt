@@ -197,7 +197,7 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
                                 objectstudent.getString("niveau"),
                                 objectstudent.getString("code_classe"),
                                 objectstudent.getString("statu"),
-                                objectstudent.getString("anne_aca"),
+                                GlobalConfig.ANEEACADEMIQUE,
                                 urlImage
                             )
                             studentList.add(student)

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/note_bottomsheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     android:layout_marginTop="@dimen/dimen_10dp"
     android:background="@drawable/shape_note_bottom_sheet"
     android:orientation="vertical"
@@ -25,34 +25,15 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/entrer_note"
+            android:gravity="center"
             android:textSize="@dimen/diment_17dp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="end"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Private"
-                android:textSize="@dimen/diment_17dp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/id_community_contribution_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_10dp" />
-        </LinearLayout>
 
     </LinearLayout>
 
 
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/id_edt_gestion_note_note_eleve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,11 +55,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dimen_50dp"
+        android:layout_marginTop="@dimen/dimen_30dp"
         android:background="@drawable/shape_save_note_btn"
         android:drawableStart="@drawable/save_icon"
         android:paddingHorizontal="@dimen/dimen_30dp"
         android:text="@string/enregistrer"
+        android:layout_marginBottom="@dimen/dimen_50dp"
         android:textColor="@color/white_color" />
 
     <!--<LinearLayout
