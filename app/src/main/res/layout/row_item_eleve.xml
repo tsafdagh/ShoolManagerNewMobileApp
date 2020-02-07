@@ -4,19 +4,19 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="15dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/id_row_item_student_image"
         android:layout_width="80dp"
-        android:layout_height="90dp"
+        android:layout_height="70dp"
         android:src="@drawable/user" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="15dp">
+        android:paddingStart="10dp">
 
 
         <TextView
@@ -24,27 +24,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nom complet"
-            android:textSize="16dp"
+            android:textSize="15dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/id_row_item_student_matricule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:textSize="16dp"
+            android:layout_marginTop="@dimen/dim_2dp"
+            android:textSize="15dp"
             android:text="MATRICULE" />
         <TextView
             android:id="@+id/id_row_item_student_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/dim_2dp"
             android:text="H" />
         <TextView
             android:id="@+id/id_row_item_student_salle_classe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/dim_2dp"
             android:text="6eme" />
     </LinearLayout>
 </LinearLayout>

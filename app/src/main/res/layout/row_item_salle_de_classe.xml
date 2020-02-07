@@ -18,9 +18,9 @@
         <ImageView
             android:id="@+id/id_b_iv_itt_image_categorien"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="70dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@drawable/ic_noun_classroom_37929" />
+            app:srcCompat="@drawable/classroom" />
 
         <TextView
             android:id="@+id/id_b_tv_itt_classe_code"

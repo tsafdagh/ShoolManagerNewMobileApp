@@ -153,7 +153,7 @@ class NoteElevesViewModel(val app:Application) : AndroidViewModel(app) {
     }
 
     val saveNoteObserver = MutableLiveData<Boolean>()
-    fun saveStudentNote(matricule:String, codeMatiere:String, numSequence:String, note:Double, examCycle:String ="note") {
+    fun saveStudentNote(matricule:String, codeMatiere:String, numSequence:String, note:Double, examCycle:String ="cc") {
         val stringRequest = object : StringRequest(
             Request.Method.POST,EndPoints.URL_SAVE_student_NOTES,
             Response.Listener<String> { response ->

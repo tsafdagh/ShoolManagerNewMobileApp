@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_eleve_and_salle_d_classe_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/id_eleve_and_salle_d_classe_fragment"
+    android:layout_marginTop="@dimen/dimen_4dp"
     tools:context=".notes_eleves.NoteElevesFragment">
 
     <LinearLayout
@@ -12,13 +13,47 @@
         android:layout_marginTop="3dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="@string/s_lectionner_une_salle_de_classe" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cycle:" />
+
+            <Spinner
+                android:id="@+id/id_spinner_cycle"
+                android:layout_width="90dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:entries="@array/cycle_evaluation"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Séquence:" />
+
+            <Spinner
+                android:id="@+id/id_spinner_sequences"
+                android:layout_width="90dp"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:entries="@array/numero_sequence"/>
+        </LinearLayout>
+
+        <TextView
+            android:background="#383838"
+            android:textColor="@color/white_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/s_lectionner_une_salle_de_classe"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/id_rv_select_student_classrom_note"
@@ -27,12 +62,14 @@
             android:padding="5dp" />
 
         <TextView
+            android:background="#383838"
+            android:textColor="@color/white_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="@string/liste_des_l_ves" />
+            android:text="@string/liste_des_l_ves"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/id_rv_all_students_note"
@@ -40,5 +77,6 @@
             android:layout_height="wrap_content"
             android:padding="5dp" />
     </LinearLayout>
+
     <include layout="@layout/botomsheet_note" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

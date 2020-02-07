@@ -1,10 +1,15 @@
 package com.kola.schoolmanagerapp.notes_eleves
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +26,8 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.botomsheet_note.*
 import kotlinx.android.synthetic.main.botomsheet_note.view.*
+import kotlinx.android.synthetic.main.note_eleve_fragment.*
+import org.jetbrains.anko.sdk25.coroutines.onItemSelectedListener
 import org.jetbrains.anko.toast
 
 class NoteElevesFragment : Fragment() {
@@ -31,6 +38,9 @@ class NoteElevesFragment : Fragment() {
         lateinit var eleveSelectionner: Model.Student
         lateinit var codeMatiereSelectionner: String
         lateinit var numSequenceSelectionner: String
+        lateinit var cycleEvalSelectionner: String
+
+        private val TAG ="NoteElevesFragment"
     }
 
     private lateinit var viewModel: NoteElevesViewModel
@@ -55,6 +65,7 @@ class NoteElevesFragment : Fragment() {
         rvEleves = root.findViewById(R.id.id_rv_all_students_note)
         selectBottomSheet = root.note_bottomsheet
         selectedBottomSheetBehavior = BottomSheetBehavior.from(selectBottomSheet)
+        defineActionBarTheme()
         return root
     }
 
@@ -71,6 +82,62 @@ class NoteElevesFragment : Fragment() {
     }
 
     private fun configureOnclick() {
+
+        val cycleEvalArray = resources.getStringArray(R.array.cycle_evaluation)
+        val numeroSequenceArray = resources.getStringArray(R.array.numero_sequence)
+
+        id_spinner_cycle.onItemSelectedListener =  object : AdapterView.OnItemSelectedListener,
+            AdapterView.OnItemClickListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemClick(parent: AdapterView<*>,
+                                     view: View,
+                                     pos: Int,
+                                     id: Long) {
+
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                pos: Int,
+                id: Long
+            ) {
+                cycleEvalSelectionner = cycleEvalArray[pos]
+                Log.d(TAG, "Cycle évaluation selectionner: $cycleEvalSelectionner")
+
+            }
+
+        }
+
+        id_spinner_sequences.onItemSelectedListener = object : AdapterView.OnItemSelectedListener,
+            AdapterView.OnItemClickListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+            override fun onItemClick(parent: AdapterView<*>,
+                                     view: View,
+                                     pos: Int,
+                                     id: Long) {
+
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                pos: Int,
+                id: Long
+            ) {
+                numSequenceSelectionner = numeroSequenceArray[pos]
+                Log.d(TAG, "numero sequence selectionner: $numSequenceSelectionner")
+            }
+
+        }
+
+
         id_edt_gestion_note_note_eleve.setOnClickListener {
 
         }
@@ -79,13 +146,14 @@ class NoteElevesFragment : Fragment() {
             if (controleNote()) {
                 val noteEleve = id_edt_gestion_note_note_eleve.text.toString().toDouble()
 
-                codeMatiereSelectionner ="ANG-2ndC"
-                numSequenceSelectionner ="1"
+                codeMatiereSelectionner = "ANG-2ndC"
+
                 viewModel.saveStudentNote(
                     eleveSelectionner.matricule,
                     codeMatiereSelectionner,
                     numSequenceSelectionner,
-                    noteEleve
+                    noteEleve,
+                    cycleEvalSelectionner
                 )
             }
         }
@@ -101,12 +169,13 @@ class NoteElevesFragment : Fragment() {
             if (noteDouble in 0.0..20.0) {
                 return true
             } else {
-                id_edt_gestion_note_note_eleve.error = "Entrez une note comprise entre 0 et 20"
+                id_edt_gestion_note_note_eleve.error =
+                    getString(R.string.erreur_champ_note_deborder)
                 return false
             }
 
         } catch (exception: Exception) {
-            id_edt_gestion_note_note_eleve.error = "Entrez une note Valide SVP"
+            id_edt_gestion_note_note_eleve.error = getString(R.string.erreur_note_non_valide)
             return false
         }
 
@@ -214,5 +283,17 @@ class NoteElevesFragment : Fragment() {
             itemsList.add(EleveItem(it))
         }
         return itemsList
+    }
+
+    private fun defineActionBarTheme() {
+        val title = getString(R.string.Eregistrement_note)
+        (activity as AppCompatActivity).supportActionBar!!.apply {
+            setBackgroundDrawable(ColorDrawable(Color.BLACK))
+            //setTitle(HtmlCompat.fromHtml("<font color=#4F5F8E>$title</font>", 0))
+            setTitle(title)
+            elevation = 0F
+            setHomeAsUpIndicator(resources.getDrawable(R.drawable.ic_arrow_back_white24dp))
+            setHasOptionsMenu(false)
+        }
     }
 }

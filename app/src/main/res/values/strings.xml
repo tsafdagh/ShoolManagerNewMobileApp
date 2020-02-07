@@ -10,4 +10,24 @@
     <string name="entrer_note">Enregistrement de note</string>
     <string name="enter_student_note">Entrez la note de l\'élève</string>
     <string name="enregistrer">Enregistrer</string>
+    <string name="Eregistrement_note">Enregistrement des notes</string>
+    <string name="erreur_champ_note_deborder">Entrez une note comprise entre 0 et 20</string>
+    <string name="erreur_note_non_valide">Entrez une note Valide SVP</string>
+
+
+    <string-array name="cycle_evaluation">
+        <item>cc</item>
+        <item>ds</item>
+        <item>note</item>
+    </string-array>
+
+    <string-array name="numero_sequence">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
 </resources>
