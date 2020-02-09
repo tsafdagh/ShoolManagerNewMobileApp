@@ -2,7 +2,6 @@ package com.kola.schoolmanagerapp.gestionEleves
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.sql.Date
 
 
 object Model {
@@ -19,19 +18,21 @@ object Model {
         @SerializedName("lieu")
         val lieu: String,
         @SerializedName("sexe")
-        val sexe:String,
+        val sexe: String,
         @SerializedName("niveau")
-        val niveau:String,
+        val niveau: String,
         @SerializedName("code_classe")
-        val code_classe:String,
+        val code_classe: String,
 
         @SerializedName("statu")
-        val statu:String,
+        val statu: String,
         @SerializedName("anne_aca")
-        val anne_aca:String,
+        val anne_aca: String,
         @SerializedName("image_location")
-        val urlImage:String
-    ):Serializable
+        val urlImage: String
+    ) : Serializable {
+        constructor() : this("", "", "", "", "", "", "", "", "", "", "")
+    }
 
 
     data class SchoolInfo(
@@ -43,6 +44,5 @@ object Model {
         val devise: String,
         @SerializedName("schooolImageUrl")
         val schooolImageUrl: String
-    ): Serializable
-
+    ) : Serializable
 }

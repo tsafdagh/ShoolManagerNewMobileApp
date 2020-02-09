@@ -261,7 +261,7 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                             )
                             studentList.add(student)
                         }
-                        AllStudentListObserver.value = studentList
+                       // AllStudentListObserver.value = studentList
                     } else {
                         Log.d(TAG, "student error String: ${obj.getString("message")}")
                         Toast.makeText(app, obj.getString("message"), Toast.LENGTH_LONG).show()

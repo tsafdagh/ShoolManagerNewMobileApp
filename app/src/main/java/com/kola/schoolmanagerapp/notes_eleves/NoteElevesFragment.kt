@@ -75,9 +75,11 @@ class NoteElevesFragment : Fragment() {
         configureObservers()
 
         viewModel.loadClassRooms()
-        viewModel.loadStudents(false, "")
+       // viewModel.loadStudents(false, "")
 
         configureOnclick()
+
+        viewModel.loadStudentsNote("5e","SVT-5e","1","cc")
 
     }
 
