@@ -100,16 +100,16 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                         for (i in 0..array.length() - 1) {
                             val objectstudent = array.getJSONObject(i)
 
-                            var urlImage = ""
-                            if (!objectstudent.getString("image_location").equals("", true)) {
-                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
-                                    "/" + objectstudent.getString("image_location")
-                                )
-                            } else {
-                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
-                                    "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
-                                )
-                            }
+                            val urlImage =
+                                if (!objectstudent.getString("image_location").equals("", true)) {
+                                    "http://" + EndPoints.SERVER_IP.plus(
+                                        "/" + objectstudent.getString("image_location")
+                                    )
+                                } else {
+                                    "http://" + EndPoints.SERVER_IP.plus(
+                                        "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
+                                    )
+                                }
 
                             Log.d(TAG, "student url image = $urlImage}")
 
@@ -233,16 +233,16 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                         for (i in 0 until array.length()) {
                             val objectstudent = array.getJSONObject(i)
 
-                            var urlImage = ""
-                            if (!objectstudent.getString("image_location").equals("", true)) {
-                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
-                                    "/" + objectstudent.getString("image_location")
-                                )
-                            } else {
-                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
-                                    "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
-                                )
-                            }
+                            val urlImage =
+                                if (!objectstudent.getString("image_location").equals("", true)) {
+                                    "http://" + EndPoints.SERVER_IP.plus(
+                                        "/" + objectstudent.getString("image_location")
+                                    )
+                                } else {
+                                    "http://" + EndPoints.SERVER_IP.plus(
+                                        "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
+                                    )
+                                }
 
                             Log.d(TAG, "student url image = $urlImage}")
 
