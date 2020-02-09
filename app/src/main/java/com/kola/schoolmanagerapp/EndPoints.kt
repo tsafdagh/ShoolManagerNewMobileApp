@@ -12,6 +12,9 @@ object EndPoints {
     var URL_ALL_TEACHERS ="${URL_ROOt}getAllTeachers"
     var URL_SAVE_student_NOTES ="${URL_ROOt}saveStudentNote"
 
+    var URL_GET_ALL_STUDENTS_NOTE_FOR_CLASSROOM = "${URL_ROOt}getAllStudentsNoteForClassroom"
+
+
 
     fun configureOtherRouteUsingIp(IpAddresse: String) {
         SERVER_IP = IpAddresse
@@ -23,5 +26,7 @@ object EndPoints {
         URL_ALL_CLASS_ROOM = "${URL_ROOt}getAllClassRoom"
         URL_ALL_TEACHERS ="${URL_ROOt}getAllTeachers"
         URL_SAVE_student_NOTES ="${URL_ROOt}saveStudentNote"
+        URL_GET_ALL_STUDENTS_NOTE_FOR_CLASSROOM = "${URL_ROOt}getAllStudentsNoteForClassroom"
+
     }
 }

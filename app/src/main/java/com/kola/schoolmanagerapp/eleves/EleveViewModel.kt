@@ -13,12 +13,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.kola.schoolmanagerapp.EndPoints
 import com.kola.schoolmanagerapp.GlobalConfig
-import com.kola.schoolmanagerapp.VolleySingleton
 import com.kola.schoolmanagerapp.entities.ClassRoom
 import com.kola.schoolmanagerapp.gestionEleves.Model
 import org.json.JSONException
 import org.json.JSONObject
-import java.sql.Date
 
 class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
 
@@ -115,7 +113,7 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
     fun loadClassRooms() {
         val stringRequest = StringRequest(
             Request.Method.GET,
-            EndPoints.URL_ALL_CLASS_ROOM+"&anneAca=${GlobalConfig.ANEEACADEMIQUE}",
+            EndPoints.URL_ALL_CLASS_ROOM + "&anneAca=${GlobalConfig.ANEEACADEMIQUE}",
             Response.Listener<String> { s ->
                 try {
                     Log.d(TAG, "response String: $s")
@@ -184,14 +182,23 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
                         for (i in 0..array.length() - 1) {
                             val objectstudent = array.getJSONObject(i)
 
-                            val urlImage =  "http://"+EndPoints.SERVER_IP.plus("/"+objectstudent.getString("image_location"))
+                            var urlImage = ""
+                            if (!objectstudent.getString("image_location").equals("", true)) {
+                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
+                                    "/" + objectstudent.getString("image_location")
+                                )
+                            } else {
+                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
+                                    "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
+                                )
+                            }
                             Log.d(TAG, "student url image = $urlImage}")
 
                             val student = Model.Student(
                                 objectstudent.getString("matricule"),
                                 objectstudent.getString("nom"),
                                 objectstudent.getString("prenom"),
-                                objectstudent.getString("date") ,
+                                objectstudent.getString("date"),
                                 objectstudent.getString("lieu"),
                                 objectstudent.getString("sexe"),
                                 objectstudent.getString("niveau"),
@@ -222,7 +229,7 @@ class EleveViewModel(private val app: Application) : AndroidViewModel(app) {
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
                 params.put("codeClasse", classroomId ?: "")
-                params.put("anneAcademique", GlobalConfig.ANEEACADEMIQUE ?:"")
+                params.put("anneAcademique", GlobalConfig.ANEEACADEMIQUE ?: "")
                 return params
             }
         }

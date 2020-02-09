@@ -105,9 +105,14 @@ class NoteElevesFragment : Fragment() {
                 pos: Int,
                 id: Long
             ) {
-                cycleEvalSelectionner = cycleEvalArray[pos]
-                Log.d(TAG, "Cycle évaluation selectionner: $cycleEvalSelectionner")
 
+                if(cycleEvalArray[pos].equals(1)){
+                    cycleEvalSelectionner = "dh"
+                }
+                else{
+                    cycleEvalSelectionner = cycleEvalArray[pos]
+                }
+                Log.d(TAG, "Cycle évaluation selectionner: $cycleEvalSelectionner")
             }
 
         }
