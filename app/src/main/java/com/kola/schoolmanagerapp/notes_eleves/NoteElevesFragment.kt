@@ -20,6 +20,8 @@ import com.kola.schoolmanagerapp.R
 import com.kola.schoolmanagerapp.eleves.items.EleveItem
 import com.kola.schoolmanagerapp.entities.ClassRoom
 import com.kola.schoolmanagerapp.gestionEleves.Model
+import com.kola.schoolmanagerapp.notes_eleves.entities.EleveNote
+import com.kola.schoolmanagerapp.notes_eleves.items.EleveNoteItem
 import com.kola.schoolmanagerapp.notes_eleves.items.SalleDeClasseItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -79,8 +81,12 @@ class NoteElevesFragment : Fragment() {
 
         configureOnclick()
 
-        viewModel.loadStudentsNote("5e","SVT-5e","1","cc")
+        codeMatiereSelectionner="INFO-4e Esp"
+        numSequenceSelectionner="1"
+        cycleEvalSelectionner="cc"
 
+
+        viewModel.loadStudentsNote("4e Esp",codeMatiereSelectionner,numSequenceSelectionner,cycleEvalSelectionner)
     }
 
     private fun configureOnclick() {
@@ -207,7 +213,9 @@ class NoteElevesFragment : Fragment() {
                         if (item is SalleDeClasseItem) {
                             context!!.toast("OnClick item")
                             //loadStudentsForClass(item.classRoom.code)
-                            viewModel.loadStudents(true, item.classRoom.code)
+                            //viewModel.loadStudents(true, item.classRoom.code)
+
+                            viewModel.loadStudentsNote(item.classRoom.code,codeMatiereSelectionner,numSequenceSelectionner,cycleEvalSelectionner)
 
                         }
 
@@ -235,7 +243,7 @@ class NoteElevesFragment : Fragment() {
      * Au click sur une salle de classe, cette fonction charge tous les élèves
      * de la dite salle de classe
      */
-    private fun showStudentListInView(studentList: ArrayList<Model.Student>) {
+    private fun showStudentListInView(studentList: ArrayList<EleveNote>) {
         rvEleves.apply {
             layoutManager = LinearLayoutManager(
                 this@NoteElevesFragment.context,
@@ -249,10 +257,10 @@ class NoteElevesFragment : Fragment() {
                 add(elleveSection)
                 setOnItemClickListener { item, view ->
 
-                    if (item is EleveItem) {
+                    if (item is EleveNoteItem) {
                         if (selectedBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                             selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                            eleveSelectionner = item.eleve
+                            eleveSelectionner = item.eleveNote.eleve
                         } else {
                             selectedBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED)
                             //context!!.toast("Expand sheet");
@@ -284,10 +292,10 @@ class NoteElevesFragment : Fragment() {
         return itemsList
     }
 
-    private fun convertStudentListToItem(studentList: List<Model.Student>): ArrayList<EleveItem> {
-        val itemsList = ArrayList<EleveItem>()
+    private fun convertStudentListToItem(studentList: List<EleveNote>): ArrayList<EleveNoteItem> {
+        val itemsList = ArrayList<EleveNoteItem>()
         studentList.forEach {
-            itemsList.add(EleveItem(it))
+            itemsList.add(EleveNoteItem(it))
         }
         return itemsList
     }

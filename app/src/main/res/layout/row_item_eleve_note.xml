@@ -66,15 +66,16 @@
             android:textStyle="bold"
             android:textColor="#338337"
             android:text="17"
-            android:textSize="@dimen/dimen_50dp"/>
+            android:textSize="@dimen/dim_25sp"/>
+
         <TextView
             android:id="@+id/id_row_itemNote_code_matiere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
-            android:textStyle="italic"
             android:layout_marginStart="5dp"
-            android:text="ECM"/>
+            android:text="ECM"
+            android:textStyle="italic" />
     </LinearLayout>
 
 </LinearLayout>

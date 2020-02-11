@@ -21,7 +21,7 @@ class EleveNoteItem(val eleveNote: EleveNote) : Item() {
         viewHolder.itemView.id_row_itemNote_Note_eleve.text = eleveNote.note.toString()
         viewHolder.itemView.id_row_itemNote_code_matiere.text = eleveNote.codeMatiere
 
-        if (eleveNote.note > 10) {
+        if (eleveNote.note > 9) {
             viewHolder.itemView.id_row_itemNote_Note_eleve.textColor = Color.GREEN
         } else {
             viewHolder.itemView.id_row_itemNote_Note_eleve.textColor = Color.RED

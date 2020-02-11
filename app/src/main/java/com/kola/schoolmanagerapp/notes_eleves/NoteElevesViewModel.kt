@@ -14,15 +14,16 @@ import com.kola.schoolmanagerapp.EndPoints
 import com.kola.schoolmanagerapp.GlobalConfig
 import com.kola.schoolmanagerapp.entities.ClassRoom
 import com.kola.schoolmanagerapp.gestionEleves.Model
+import com.kola.schoolmanagerapp.notes_eleves.entities.EleveNote
 import org.json.JSONException
 import org.json.JSONObject
 
 class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
 
     val classRoomListObserver = MutableLiveData<List<ClassRoom>>()
-    val studentClassRoomListObserver = MutableLiveData<ArrayList<Model.Student>>()
-    val AllStudentListObserver = MutableLiveData<ArrayList<Model.Student>>()
-    private val TAG = "EleveViewModel"
+    //val studentClassRoomListObserver = MutableLiveData<ArrayList<Model.Student>>()
+    val AllStudentListObserver = MutableLiveData<ArrayList<EleveNote>>()
+    private val TAG = "NoteEleveViewModel"
 
     /*
     * Cette fonction a pour but de lister l'ensemble
@@ -41,7 +42,7 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
 
                         val classroomList = ArrayList<ClassRoom>()
 
-                        for (i in 0..array.length() - 1) {
+                        for (i in 0 until array.length()) {
                             val objectClassRoom = array.getJSONObject(i)
                             val classroom = ClassRoom(
                                 objectClassRoom.getString("nom_salle"),
@@ -77,7 +78,7 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
         requestQueue.add<String>(stringRequest)
     }
 
-    fun loadStudents(byClassRoom: Boolean = false, classroomId: String? = null) {
+    /*fun loadStudents(byClassRoom: Boolean = false, classroomId: String? = null) {
         var URL = ""
         if (byClassRoom) {
             URL = EndPoints.URL_GET_ALL_STUDENTS_FOR_CLASSROOM
@@ -157,6 +158,8 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
         val requestQueue = Volley.newRequestQueue(app)
         requestQueue.add<String>(stringRequest2)
     }
+    */
+
 
     val saveNoteObserver = MutableLiveData<Boolean>()
     fun saveStudentNote(
@@ -226,9 +229,9 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                     Log.d(TAG, "response String: $response")
                     val obj = JSONObject(response)
                     if (!obj.getBoolean("error")) {
-                        val array = obj.getJSONArray("students")
+                        val array = obj.getJSONArray("studentNotes")
 
-                        val studentList = ArrayList<Model.Student>()
+                        val studentList = ArrayList<EleveNote>()
 
                         for (i in 0 until array.length()) {
                             val objectstudent = array.getJSONObject(i)
@@ -246,6 +249,7 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
 
                             Log.d(TAG, "student url image = $urlImage}")
 
+
                             val student = Model.Student(
                                 objectstudent.getString("matricule"),
                                 objectstudent.getString("nom"),
@@ -259,9 +263,14 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                                 objectstudent.getString("anne_aca"),
                                 urlImage
                             )
-                            studentList.add(student)
+                            val studentNote = EleveNote()
+                            studentNote.eleve = student
+                            studentNote.codeMatiere = objectstudent.getString("code_matiere")
+                            studentNote.note = objectstudent.getDouble("note")
+                            studentNote.numSequence = objectstudent.getInt("num_sequence")
+                            studentList.add(studentNote)
                         }
-                       // AllStudentListObserver.value = studentList
+                        AllStudentListObserver.value = studentList
                     } else {
                         Log.d(TAG, "student error String: ${obj.getString("message")}")
                         Toast.makeText(app, obj.getString("message"), Toast.LENGTH_LONG).show()
