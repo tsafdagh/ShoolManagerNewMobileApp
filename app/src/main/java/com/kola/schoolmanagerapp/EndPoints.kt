@@ -13,6 +13,8 @@ object EndPoints {
     var URL_SAVE_student_NOTES ="${URL_ROOt}saveStudentNote"
 
     var URL_GET_ALL_STUDENTS_NOTE_FOR_CLASSROOM = "${URL_ROOt}getAllStudentsNoteForClassroom"
+    var URL_MATIERES_DE_LA_CLASSE = "${URL_ROOt}getMatiereForClassRoom"
+
 
 
 
@@ -27,6 +29,7 @@ object EndPoints {
         URL_ALL_TEACHERS ="${URL_ROOt}getAllTeachers"
         URL_SAVE_student_NOTES ="${URL_ROOt}saveStudentNote"
         URL_GET_ALL_STUDENTS_NOTE_FOR_CLASSROOM = "${URL_ROOt}getAllStudentsNoteForClassroom"
+        URL_MATIERES_DE_LA_CLASSE = "${URL_ROOt}getMatiereForClassRoom"
 
     }
 }

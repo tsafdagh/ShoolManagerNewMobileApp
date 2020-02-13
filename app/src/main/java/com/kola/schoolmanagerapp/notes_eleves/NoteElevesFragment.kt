@@ -29,7 +29,6 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.botomsheet_note.*
 import kotlinx.android.synthetic.main.botomsheet_note.view.*
 import kotlinx.android.synthetic.main.note_eleve_fragment.*
-import org.jetbrains.anko.sdk25.coroutines.onItemSelectedListener
 import org.jetbrains.anko.toast
 
 class NoteElevesFragment : Fragment() {
@@ -42,7 +41,7 @@ class NoteElevesFragment : Fragment() {
         lateinit var numSequenceSelectionner: String
         lateinit var cycleEvalSelectionner: String
 
-        private val TAG ="NoteElevesFragment"
+        private val TAG = "NoteElevesFragment"
     }
 
     private lateinit var viewModel: NoteElevesViewModel
@@ -77,16 +76,21 @@ class NoteElevesFragment : Fragment() {
         configureObservers()
 
         viewModel.loadClassRooms()
-       // viewModel.loadStudents(false, "")
+        // viewModel.loadStudents(false, "")
 
         configureOnclick()
 
-        codeMatiereSelectionner="INFO-4e Esp"
-        numSequenceSelectionner="1"
-        cycleEvalSelectionner="cc"
+        codeMatiereSelectionner = "INFO-4e Esp"
+        numSequenceSelectionner = "1"
+        cycleEvalSelectionner = "cc"
 
 
-        viewModel.loadStudentsNote("4e Esp",codeMatiereSelectionner,numSequenceSelectionner,cycleEvalSelectionner)
+        viewModel.loadStudentsNote(
+            "4e Esp",
+            codeMatiereSelectionner,
+            numSequenceSelectionner,
+            cycleEvalSelectionner
+        )
     }
 
     private fun configureOnclick() {
@@ -94,16 +98,18 @@ class NoteElevesFragment : Fragment() {
         val cycleEvalArray = resources.getStringArray(R.array.cycle_evaluation)
         val numeroSequenceArray = resources.getStringArray(R.array.numero_sequence)
 
-        id_spinner_cycle.onItemSelectedListener =  object : AdapterView.OnItemSelectedListener,
+        id_spinner_cycle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener,
             AdapterView.OnItemClickListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
-            override fun onItemClick(parent: AdapterView<*>,
-                                     view: View,
-                                     pos: Int,
-                                     id: Long) {
+            override fun onItemClick(
+                parent: AdapterView<*>,
+                view: View,
+                pos: Int,
+                id: Long
+            ) {
 
             }
 
@@ -114,10 +120,9 @@ class NoteElevesFragment : Fragment() {
                 id: Long
             ) {
 
-                if(cycleEvalArray[pos].equals(1)){
+                if (cycleEvalArray[pos].equals(1)) {
                     cycleEvalSelectionner = "dh"
-                }
-                else{
+                } else {
                     cycleEvalSelectionner = cycleEvalArray[pos]
                 }
                 Log.d(TAG, "Cycle évaluation selectionner: $cycleEvalSelectionner")
@@ -131,10 +136,12 @@ class NoteElevesFragment : Fragment() {
 
             }
 
-            override fun onItemClick(parent: AdapterView<*>,
-                                     view: View,
-                                     pos: Int,
-                                     id: Long) {
+            override fun onItemClick(
+                parent: AdapterView<*>,
+                view: View,
+                pos: Int,
+                id: Long
+            ) {
 
             }
 
@@ -194,7 +201,6 @@ class NoteElevesFragment : Fragment() {
 
     }
 
-
     private fun configureObservers() {
         viewModel.classRoomListObserver.observe(this, Observer { listOfClass ->
             rvSallClass.apply {
@@ -215,7 +221,23 @@ class NoteElevesFragment : Fragment() {
                             //loadStudentsForClass(item.classRoom.code)
                             //viewModel.loadStudents(true, item.classRoom.code)
 
-                            viewModel.loadStudentsNote(item.classRoom.code,codeMatiereSelectionner,numSequenceSelectionner,cycleEvalSelectionner)
+                            viewModel.loadMatiereParClasses(
+                                item.classRoom.code,
+                                onComplet = { matiereList ->
+                                    matiereList.forEach {
+                                        Log.d(TAG, it.toString())
+                                    }
+                                },
+                                onError = {
+                                    Log.d(TAG, "Error to load data")
+                                })
+
+                            viewModel.loadStudentsNote(
+                                item.classRoom.code,
+                                codeMatiereSelectionner,
+                                numSequenceSelectionner,
+                                cycleEvalSelectionner
+                            )
 
                         }
 

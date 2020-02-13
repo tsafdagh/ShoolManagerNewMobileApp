@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley
 import com.kola.schoolmanagerapp.EndPoints
 import com.kola.schoolmanagerapp.GlobalConfig
 import com.kola.schoolmanagerapp.entities.ClassRoom
+import com.kola.schoolmanagerapp.entities.Matiere
 import com.kola.schoolmanagerapp.gestionEleves.Model
 import com.kola.schoolmanagerapp.notes_eleves.entities.EleveNote
 import org.json.JSONException
@@ -77,89 +78,6 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
         val requestQueue = Volley.newRequestQueue(app)
         requestQueue.add<String>(stringRequest)
     }
-
-    /*fun loadStudents(byClassRoom: Boolean = false, classroomId: String? = null) {
-        var URL = ""
-        if (byClassRoom) {
-            URL = EndPoints.URL_GET_ALL_STUDENTS_FOR_CLASSROOM
-        } else {
-            URL = EndPoints.URL_GET_ALL_STUDENTS
-        }
-
-        //creating volley string request
-        val stringRequest2 = object : StringRequest(
-            Request.Method.POST, URL,
-            Response.Listener<String> { response ->
-                try {
-                    Log.d(TAG, "response String: $response")
-                    val obj = JSONObject(response)
-                    if (!obj.getBoolean("error")) {
-                        val array = obj.getJSONArray("students")
-
-                        val studentList = ArrayList<Model.Student>()
-
-                        for (i in 0..array.length() - 1) {
-                            val objectstudent = array.getJSONObject(i)
-
-                            val urlImage =
-                                if (!objectstudent.getString("image_location").equals("", true)) {
-                                    "http://" + EndPoints.SERVER_IP.plus(
-                                        "/" + objectstudent.getString("image_location")
-                                    )
-                                } else {
-                                    "http://" + EndPoints.SERVER_IP.plus(
-                                        "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
-                                    )
-                                }
-
-                            Log.d(TAG, "student url image = $urlImage}")
-
-                            val student = Model.Student(
-                                objectstudent.getString("matricule"),
-                                objectstudent.getString("nom"),
-                                objectstudent.getString("prenom"),
-                                objectstudent.getString("date"),
-                                objectstudent.getString("lieu"),
-                                objectstudent.getString("sexe"),
-                                objectstudent.getString("niveau"),
-                                objectstudent.getString("code_classe"),
-                                objectstudent.getString("statu"),
-                                objectstudent.getString("anne_aca"),
-                                urlImage
-                            )
-                            studentList.add(student)
-                        }
-                        AllStudentListObserver.value = studentList
-                    } else {
-                        Log.d(TAG, "student error String: ${obj.getString("message")}")
-                        Toast.makeText(app, obj.getString("message"), Toast.LENGTH_LONG).show()
-                    }
-                } catch (e: JSONException) {
-                    Log.d(TAG, "student error String: ${e}")
-                    e.printStackTrace()
-                }
-            },
-            Response.ErrorListener { volleyError ->
-                Toast.makeText(app, volleyError.message, Toast.LENGTH_LONG).show()
-                Log.d(TAG, "student error String: ${volleyError.message}")
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params.put("codeClasse", classroomId ?: "")
-                params.put("anneAcademique", GlobalConfig.ANEEACADEMIQUE)
-                return params
-            }
-        }
-
-        //adding request to queue
-        //VolleySingleton.instance?.addToRequestQueue(stringRequest2)
-
-        val requestQueue = Volley.newRequestQueue(app)
-        requestQueue.add<String>(stringRequest2)
-    }
-    */
-
 
     val saveNoteObserver = MutableLiveData<Boolean>()
     fun saveStudentNote(
@@ -243,7 +161,9 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                                     )
                                 } else {
                                     "http://" + EndPoints.SERVER_IP.plus(
-                                        "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
+                                        "APISchoolManager2/students_images/${objectstudent.getString(
+                                            "matricule"
+                                        )}"
                                     )
                                 }
 
@@ -301,5 +221,68 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
 
         val requestQueue = Volley.newRequestQueue(app)
         requestQueue.add<String>(stringRequest2)
+    }
+
+
+    /*
+* Cette fonction a pour but de lister l'ensemble
+* des sallles de classes de la base de données
+* */
+    fun loadMatiereParClasses(codeClasse:String, onComplet: (ArrayList<Matiere>) -> Unit, onError:()->Unit) {
+        val stringRequest = StringRequest(
+            Request.Method.GET,
+            EndPoints.URL_MATIERES_DE_LA_CLASSE+ "&codeClasse=$codeClasse",
+            Response.Listener<String> { s ->
+                try {
+                    Log.d(TAG, "response String: $s")
+                    val obj = JSONObject(s)
+                    if (!obj.getBoolean("error")) {
+                        val array = obj.getJSONArray("matieres")
+
+                        val matiereList = ArrayList<Matiere>()
+
+                        for (i in 0 until array.length()) {
+                            val objectMatieres = array.getJSONObject(i)
+                            val matiere = Matiere()
+
+                            matiere.codeMatiere = objectMatieres.getString("code_matiere")
+                            matiere.intitule = objectMatieres.getString("intitule")
+                            matiere.niveau = objectMatieres.getString("niveau")
+                            matiere.codeSalle = objectMatieres.getString("code_salle")
+                            matiere.CodeEnseignant= objectMatieres.getString("enseignant")
+                            matiere.coeficient = objectMatieres.getDouble("coeficient")
+                            matiere.groupeMatiere = objectMatieres.getString("groupe")
+                            matiere.competance = objectMatieres.getString("competance")
+
+                            matiereList.add(matiere)
+                        }
+                        onComplet(matiereList)
+                    } else {
+                        Toast.makeText(app, obj.getString("message"), Toast.LENGTH_LONG).show()
+                        Log.d(TAG, "matiere error String: ${obj.getString("message")}")
+                        onError()
+
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    Log.d(TAG, "matieres error String: ${e}")
+                    onError()
+                }
+            },
+            Response.ErrorListener { volleyError ->
+                Log.d(TAG, "Error error String: ${volleyError.message}")
+
+                Toast.makeText(
+                    app,
+                    volleyError.message,
+                    Toast.LENGTH_LONG
+                ).show()
+
+                onError()
+            })
+
+
+        val requestQueue = Volley.newRequestQueue(app)
+        requestQueue.add<String>(stringRequest)
     }
 }
