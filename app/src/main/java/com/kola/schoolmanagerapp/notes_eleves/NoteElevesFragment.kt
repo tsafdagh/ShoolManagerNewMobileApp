@@ -225,25 +225,30 @@ class NoteElevesFragment : Fragment() {
                             viewModel.loadMatiereParClasses(
                                 item.classRoom.code,
                                 onComplet = { matiereList ->
+
+                                    val matiereCodeList = ArrayList<String>()
                                     matiereList.forEach {
                                         Log.d(TAG, it.toString())
+                                        matiereCodeList.add(it.codeMatiere)
                                     }
+
+                                    GestionNotesUtils.showDialoForTypeNoteSelection(
+                                        layoutInflater,
+                                        context,
+                                        matiereCodeList,
+                                        onListen = { codeMatiere: String, typeExam: EnumTypeExam, numSeq: Int ->
+
+                                            viewModel.loadStudentsNote(
+                                                item.classRoom.code,
+                                                codeMatiere,
+                                                numSeq.toString(),
+                                                typeExam.curentType
+                                            )
+                                        })
                                 },
                                 onError = {
                                     Log.d(TAG, "Error to load data")
                                 })
-
-                            GestionNotesUtils.showDialoForTypeNoteSelection(layoutInflater,context,onListen = {
-                                codeMatier:String,typeExam:EnumTypeExam,numSeq:Int ->
-
-                                viewModel.loadStudentsNote(
-                                    item.classRoom.code,
-                                    codeMatiereSelectionner,
-                                    numSequenceSelectionner,
-                                    cycleEvalSelectionner
-                                )
-                            })
-
 
                         }
 
