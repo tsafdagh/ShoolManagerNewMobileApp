@@ -21,6 +21,7 @@ import com.kola.schoolmanagerapp.eleves.items.EleveItem
 import com.kola.schoolmanagerapp.entities.ClassRoom
 import com.kola.schoolmanagerapp.gestionEleves.Model
 import com.kola.schoolmanagerapp.notes_eleves.entities.EleveNote
+import com.kola.schoolmanagerapp.notes_eleves.enums.EnumTypeExam
 import com.kola.schoolmanagerapp.notes_eleves.items.EleveNoteItem
 import com.kola.schoolmanagerapp.notes_eleves.items.SalleDeClasseItem
 import com.xwray.groupie.GroupAdapter
@@ -232,12 +233,17 @@ class NoteElevesFragment : Fragment() {
                                     Log.d(TAG, "Error to load data")
                                 })
 
-                            viewModel.loadStudentsNote(
-                                item.classRoom.code,
-                                codeMatiereSelectionner,
-                                numSequenceSelectionner,
-                                cycleEvalSelectionner
-                            )
+                            GestionNotesUtils.showDialoForTypeNoteSelection(layoutInflater,context,onListen = {
+                                codeMatier:String,typeExam:EnumTypeExam,numSeq:Int ->
+
+                                viewModel.loadStudentsNote(
+                                    item.classRoom.code,
+                                    codeMatiereSelectionner,
+                                    numSequenceSelectionner,
+                                    cycleEvalSelectionner
+                                )
+                            })
+
 
                         }
 

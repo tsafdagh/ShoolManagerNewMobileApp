@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/s_lectionner_une_mati_re" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <NumberPicker
+                android:id="@+id/id_number_picker_code_matiere"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:layout_marginHorizontal="32dp"
+                style="@style/numberPickerTheme"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <RadioGroup
+                android:id="@+id/id_radio_button_cycle_exam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <RadioButton
+                    android:id="@+id/id_radio_cycle_exam_cc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:padding="4dp"
+                    android:text="@string/cc" />
+
+                <RadioButton
+                    android:id="@+id/id_radio_cycle_exam_ds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/ds" />
+
+                <RadioButton
+                    android:id="@+id/id_radio_cycle_exam_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/note_classique" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/id_choose_day_meeting_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:text="@string/s_quences_d_valuation"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/date_meeting_for_weekly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Numéro de séquence" />
+
+            <Spinner
+                android:id="@+id/id_spinner_numero_sequence"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_weight="1"
+                android:entries="@array/numero_sequence"
+                android:background="@drawable/back_ground_spinner_custom" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

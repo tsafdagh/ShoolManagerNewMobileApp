@@ -13,6 +13,13 @@
     <string name="Eregistrement_note">Enregistrement des notes</string>
     <string name="erreur_champ_note_deborder">Entrez une note comprise entre 0 et 20</string>
     <string name="erreur_note_non_valide">Entrez une note Valide SVP</string>
+    <string name="s_lectionner_une_mati_re">Sélectionner une matière</string>
+    <string name="cc">cc</string>
+    <string name="ds">ds</string>
+    <string name="note_classique">note classique</string>
+    <string name="s_quences_d_valuation">Séquences d\'évaluation</string>
+    <string name="cancel">Fermer</string>
+    <string name="ok">Valider</string>
 
 
     <string-array name="cycle_evaluation">
