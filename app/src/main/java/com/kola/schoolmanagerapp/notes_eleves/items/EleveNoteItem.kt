@@ -3,6 +3,7 @@ package com.kola.schoolmanagerapp.notes_eleves.items
 import android.graphics.Color
 import com.bumptech.glide.Glide
 import com.kola.schoolmanagerapp.R
+import com.kola.schoolmanagerapp.notes_eleves.NoteElevesFragment
 import com.kola.schoolmanagerapp.notes_eleves.entities.EleveNote
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -25,6 +26,12 @@ class EleveNoteItem(val eleveNote: EleveNote) : Item() {
             viewHolder.itemView.id_row_itemNote_Note_eleve.textColor = Color.GREEN
         } else {
             viewHolder.itemView.id_row_itemNote_Note_eleve.textColor = Color.RED
+        }
+
+        if (eleveNote.note == NoteElevesFragment.NOTE_ELEVE_MANQUANTE){
+            viewHolder.itemView.id_row_itemNote_Note_eleve.text = "---"
+            viewHolder.itemView.id_row_itemNote_Note_eleve.textColor = Color.YELLOW
+
         }
 
         Glide.with(viewHolder.itemView.context)

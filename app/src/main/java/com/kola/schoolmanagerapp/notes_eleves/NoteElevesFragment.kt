@@ -30,6 +30,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.botomsheet_note.*
 import kotlinx.android.synthetic.main.botomsheet_note.view.*
 import kotlinx.android.synthetic.main.note_eleve_fragment.*
+import org.jetbrains.anko.indeterminateProgressDialog
 import org.jetbrains.anko.toast
 
 class NoteElevesFragment : Fragment() {
@@ -37,10 +38,17 @@ class NoteElevesFragment : Fragment() {
 
     companion object {
         fun newInstance() = NoteElevesFragment()
+
+        const val NOTE_ELEVE_MANQUANTE = -5.0
         lateinit var eleveSelectionner: Model.Student
         lateinit var codeMatiereSelectionner: String
         lateinit var numSequenceSelectionner: String
         lateinit var cycleEvalSelectionner: String
+
+        private lateinit var CURENT_SELECTTED_CLASS_ROOM_CODE: String
+        private lateinit var CURENT_SELECTTED_CODE_MATIERE: String
+        private  var CURENT_SELECTTED_NUMERO_SEQUENCE = 1
+
 
         private val TAG = "NoteElevesFragment"
     }
@@ -81,17 +89,17 @@ class NoteElevesFragment : Fragment() {
 
         configureOnclick()
 
-        codeMatiereSelectionner = "INFO-4e Esp"
-        numSequenceSelectionner = "1"
-        cycleEvalSelectionner = "cc"
+        /*       codeMatiereSelectionner = "INFO-4e Esp"
+               numSequenceSelectionner = "1"
+               cycleEvalSelectionner = "cc"
 
 
-        viewModel.loadStudentsNote(
-            "4e Esp",
-            codeMatiereSelectionner,
-            numSequenceSelectionner,
-            cycleEvalSelectionner
-        )
+               viewModel.loadStudentsNote(
+                   "4e Esp",
+                   codeMatiereSelectionner,
+                   numSequenceSelectionner,
+                   cycleEvalSelectionner
+               )*/
     }
 
     private fun configureOnclick() {
@@ -238,8 +246,11 @@ class NoteElevesFragment : Fragment() {
                                         matiereCodeList,
                                         onListen = { codeMatiere: String, typeExam: EnumTypeExam, numSeq: Int ->
 
+                                            CURENT_SELECTTED_CLASS_ROOM_CODE = item.classRoom.code
+                                            CURENT_SELECTTED_CODE_MATIERE = codeMatiere
+                                            CURENT_SELECTTED_NUMERO_SEQUENCE = numSeq
                                             viewModel.loadStudentsNote(
-                                                item.classRoom.code,
+                                                CURENT_SELECTTED_CLASS_ROOM_CODE,
                                                 codeMatiere,
                                                 numSeq.toString(),
                                                 typeExam.curentType
@@ -256,8 +267,66 @@ class NoteElevesFragment : Fragment() {
                 }
             }
         })
-        viewModel.AllStudentListObserver.observe(this, Observer { studentList ->
-            showStudentListInView(studentList)
+
+        val pDialog =
+            context!!.indeterminateProgressDialog("Chargement des notes, veuillez patienter...")
+        viewModel.AllStudentListObserver.observe(this, Observer { studentNoteList ->
+
+            // on range la liste des notes des élèves par ordre croissant de matircule
+            studentNoteList.sortBy { it.eleve.matricule }
+            val finalListToShow = ArrayList<EleveNote>()
+            /** Afin de pouvoir afficher la note par défaullt si des sélèves d'une classe n'ont  pas encore
+             * de note pour la séquence séquence sélectionnée, le recupère la liste des élèves
+             * de la classe sélectionneé */
+
+            viewModel.loadStudentsByClassRoom(
+                CURENT_SELECTTED_CLASS_ROOM_CODE,
+                onComplet = { studentSelectedClassRoomList ->
+
+                    // on range la liste des élèves de la classe par ordre croissant de matircule
+                    studentSelectedClassRoomList.sortBy { it.matricule }
+                    pDialog.dismiss()
+
+                    //parcour de la liste des élèves
+                    studentSelectedClassRoomList.forEach { curentStudent ->
+
+                        // si il y'a quand même les élèves qui ont une note
+                        if (!studentNoteList.isNullOrEmpty()) {
+
+                            //pour chuque élève on parcour de la liste des notes afin de vérifier si il a une note dans la liste recupérée
+                            studentNoteList.forEach { curentStudentNote ->
+
+                                // si la note de l'élève est présente, on l'ajoute dans la liste à afficher
+                                if (curentStudentNote.eleve.matricule.equals(
+                                        curentStudent.matricule,
+                                        true
+                                    )
+                                ) {
+                                    finalListToShow.add(curentStudentNote)
+                                    return@forEach
+                                } else {
+                                    // si non, la note de l'élève n'est pas présente, on la crès et on l'ajoute dans la liste à afficher
+                                    val createdStudentNote = EleveNote()
+                                    createdStudentNote.eleve = curentStudent
+                                    createdStudentNote.codeMatiere = CURENT_SELECTTED_CODE_MATIERE
+                                    createdStudentNote.note = NOTE_ELEVE_MANQUANTE
+                                    createdStudentNote.numSequence = CURENT_SELECTTED_NUMERO_SEQUENCE
+                                    finalListToShow.add(createdStudentNote)
+                                }
+                            }
+                        } else {
+                            // si aucun élève n'a de note
+                            val createdStudentNote = EleveNote()
+                            createdStudentNote.eleve = curentStudent
+                            createdStudentNote.codeMatiere = CURENT_SELECTTED_CODE_MATIERE
+                            createdStudentNote.note = NOTE_ELEVE_MANQUANTE
+                            createdStudentNote.numSequence = CURENT_SELECTTED_NUMERO_SEQUENCE
+                            finalListToShow.add(createdStudentNote)
+                        }
+                    }
+
+                    showStudentListInView(finalListToShow)
+                })
         })
 
         viewModel.saveNoteObserver.observe(this, Observer {

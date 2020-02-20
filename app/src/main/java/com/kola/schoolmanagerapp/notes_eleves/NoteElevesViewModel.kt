@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.kola.schoolmanagerapp.EndPoints
@@ -145,11 +146,12 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
             Response.Listener<String> { response ->
                 try {
                     Log.d(TAG, "response String: $response")
+
+                    val studentList = ArrayList<EleveNote>()
+
                     val obj = JSONObject(response)
                     if (!obj.getBoolean("error")) {
                         val array = obj.getJSONArray("studentNotes")
-
-                        val studentList = ArrayList<EleveNote>()
 
                         for (i in 0 until array.length()) {
                             val objectstudent = array.getJSONObject(i)
@@ -168,7 +170,6 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                                 }
 
                             Log.d(TAG, "student url image = $urlImage}")
-
 
                             val student = Model.Student(
                                 objectstudent.getString("matricule"),
@@ -193,7 +194,7 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
                         AllStudentListObserver.value = studentList
                     } else {
                         Log.d(TAG, "student error String: ${obj.getString("message")}")
-                        Toast.makeText(app, obj.getString("message"), Toast.LENGTH_LONG).show()
+                        AllStudentListObserver.value = studentList
                     }
                 } catch (e: JSONException) {
                     Log.d(TAG, "student error String: $e")
@@ -285,4 +286,82 @@ class NoteElevesViewModel(val app: Application) : AndroidViewModel(app) {
         val requestQueue = Volley.newRequestQueue(app)
         requestQueue.add<String>(stringRequest)
     }
+
+
+
+    fun loadStudentsByClassRoom(classroomId: String? = null, onComplet: (ArrayList<Model.Student>) -> Unit) {
+
+        //creating volley string request
+        val stringRequest2 = object : StringRequest(
+            Request.Method.POST, EndPoints.URL_GET_ALL_STUDENTS_FOR_CLASSROOM,
+            Response.Listener<String> { response ->
+                try {
+                    Log.d(TAG, "response String: $response")
+
+                    val studentList = ArrayList<Model.Student>()
+                    val obj = JSONObject(response)
+                    if (!obj.getBoolean("error")) {
+                        val array = obj.getJSONArray("students")
+                        for (i in 0..array.length() - 1) {
+                            val objectstudent = array.getJSONObject(i)
+
+                            var urlImage = ""
+                            if (!objectstudent.getString("image_location").equals("", true)) {
+                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
+                                    "/" + objectstudent.getString("image_location")
+                                )
+                            } else {
+                                urlImage = "http://" + EndPoints.SERVER_IP.plus(
+                                    "APISchoolManager2/students_images/${objectstudent.getString("matricule")}"
+                                )
+                            }
+                            Log.d(TAG, "student url image = $urlImage}")
+
+                            val student = Model.Student(
+                                objectstudent.getString("matricule"),
+                                objectstudent.getString("nom"),
+                                objectstudent.getString("prenom"),
+                                objectstudent.getString("date"),
+                                objectstudent.getString("lieu"),
+                                objectstudent.getString("sexe"),
+                                objectstudent.getString("niveau"),
+                                objectstudent.getString("code_classe"),
+                                objectstudent.getString("statu"),
+                                GlobalConfig.ANEEACADEMIQUE,
+                                urlImage
+                            )
+                            studentList.add(student)
+                        }
+                        onComplet(studentList)
+                    } else {
+                        Log.d(TAG, "student error String: ${obj.getString("message")}")
+                        onComplet(studentList)
+                    }
+                } catch (e: JSONException) {
+                    Log.d(TAG, "student error String: ${e}")
+                    e.printStackTrace()
+                }
+            },
+            object : Response.ErrorListener {
+                override fun onErrorResponse(volleyError: VolleyError) {
+                    Toast.makeText(app, volleyError.message, Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "student error String: ${volleyError.message}")
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params.put("codeClasse", classroomId ?: "")
+                params.put("anneAcademique", GlobalConfig.ANEEACADEMIQUE ?: "")
+                return params
+            }
+        }
+
+        //adding request to queue
+        //VolleySingleton.instance?.addToRequestQueue(stringRequest2)
+
+        val requestQueue = Volley.newRequestQueue(app)
+        requestQueue.add<String>(stringRequest2)
+    }
+
 }
